@@ -15,7 +15,7 @@ namespace range_minimum_query {
 		// Destructor to remove all allocated memory
 		~Fischer_Heun();
 		// The main query function, can take any amount of queries
-		std::vector<int> Query(const std::vector<Query>& queries);
+		std::vector<int> query(const std::vector<Query>& queries);
 	};
 }
 #endif
