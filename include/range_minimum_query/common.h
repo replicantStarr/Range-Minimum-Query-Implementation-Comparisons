@@ -7,6 +7,9 @@
  * It makes tesing simple -- we only need to write one set of tests.
  */
 
+#include <utility>
+#include <vector>
+
 namespace range_minimum_query {
 	// Simple compile-time alias so there is no overhead.
 	using Query = std::pair<std::size_t, std::size_t>;
