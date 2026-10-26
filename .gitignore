@@ -1,0 +1,15 @@
+build/
+cmake-build-*/
+out/
+
+.vscode/
+.idea/
+.cache/
+compile_commands.json
+*.swp
+.DS_Store
+
+*.o
+*.a
+*.so
+*.out
