@@ -25,7 +25,20 @@ namespace range_minimum_query {
 		}
 	}
 
-	std::vector<int> Segment_Tree::query([[maybe_unused]] const std::vector<Query>& queries) {
+	int Segment_Tree::rangeMin(int pos, int nodeL, int nodeR, int queryL, int queryR) {
+		//No overlap in node to query
+		if (queryL > nodeR || queryR < nodeL) {
+			return INT_MAX;
+		}
+
+		//Complete overlap in node to query
+		if (queryL <= nodeL && queryR >= nodeR) {
+			return segmentTree[pos];
+		}
+	}
+
+	std::vector<int> Segment_Tree::query(const std::vector<Query>& queries) {
+
 		return {0};
 	}
 }
