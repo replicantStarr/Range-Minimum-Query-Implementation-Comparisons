@@ -9,5 +9,8 @@ namespace range_minimum_query {
 	public:
 		Segment_Tree(const std::vector<int>& a);
 		std::vector<int> query(const std::vector<Query>& queries);
+	private:
+		std::vector<int> segmentTree;
+		int leaves;
 	};
 }
