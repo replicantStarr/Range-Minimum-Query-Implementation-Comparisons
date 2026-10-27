@@ -35,6 +35,11 @@ namespace range_minimum_query {
 		if (queryL <= nodeL && queryR >= nodeR) {
 			return segmentTree[pos];
 		}
+
+		//Partial overlap in node to query, recursing the function
+		int mid{ (nodeL + nodeR) / 2 };
+		return std::min(rangeMin(pos * 2 + 1, nodeL, mid, queryL, queryR), rangeMin(pos * 2 + 2, mid + 1, nodeR, queryL, queryR));
+
 	}
 
 	std::vector<int> Segment_Tree::query(const std::vector<Query>& queries) {
