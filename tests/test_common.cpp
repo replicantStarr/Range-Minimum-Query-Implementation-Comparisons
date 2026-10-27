@@ -19,4 +19,13 @@ TYPED_TEST(Range_Minimum_Query_Test, ReturnsEmptyOnEmpty) {
 	ASSERT_TRUE(ans.empty());
 }
 
+TYPED_TEST(Range_Minimum_Query_Test, ThrowsExceptionOnOutOfBounds) {
+}
+
+TYPED_TEST(Range_Minimum_Query_Test, ReturnsExpectedWithinBounds) {
+}
+
+TYPED_TEST(Range_Minimum_Query_Test, ReturnsExpectedWithMultipleCalls) {
+}
+
 
