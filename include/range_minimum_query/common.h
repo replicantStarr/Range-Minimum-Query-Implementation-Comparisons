@@ -7,6 +7,7 @@
  */
 
 #include <vector>
+#include <stdexcept>
 
 namespace range_minimum_query {
 	// Simple compile-time alias so there is no overhead.
@@ -14,5 +15,10 @@ namespace range_minimum_query {
 
 	// Used in tests to make sure only a function with these arguments is given.
 	using RMQFn = std::vector<int>(std::vector<Query>& queries);
+
+	// Custom exception for invalid queries {a, b} where b <= a.
+	class Invalid_Query_Exception : public std::logic_error {
+		using std::logic_error::logic_error;
+	}
 }
 
