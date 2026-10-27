@@ -8,6 +8,8 @@ struct Range_Minimum_Query_Test: ::testing::Test {};
 
 using Implementations = ::testing::Types<range_minimum_query::Fischer_Heun, range_minimum_query::Sparse_Table, range_minimum_query::Segment_Tree>;
 
+const std::vector<int> generic_array = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+
 TYPED_TEST_SUITE(Range_Minimum_Query_Test, Implementations);
 
 TYPED_TEST(Range_Minimum_Query_Test, ReturnsEmptyOnEmpty) {
@@ -17,11 +19,22 @@ TYPED_TEST(Range_Minimum_Query_Test, ReturnsEmptyOnEmpty) {
 	ASSERT_THROW(imp.query({{0, 1}}), std::out_of_bounds);
 }
 
-TYPED_TEST(Range_Minimum_Query_Test, ThrowsExceptionOnOutOfBounds) {
+const std::vector<query> out_of_bounds_queries = {
+	{0, 12},
+	{5, 12},
+	{11, 12}
+	{12, 13}
+};
 
+TYPED_TEST(Range_Minimum_Query_Test, ThrowsExceptionOnOutOfBounds) {
+	TypeParam imp(generic_array);
+
+	for (size_t i = 0; i < out_of_bounds_queries; ++i) {
+		SCOPED_TRACE(out_of_bounds_queries[i]);
+		EXPECT_THROW(imp.query(out_of_bounds_queries[i]), std::out_of_range);
+	}
 }
 
-const std::vector<int> generic_array = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
 const std::vector<Query> invalid_queries = {
 	{-2, -1},
@@ -29,7 +42,9 @@ const std::vector<Query> invalid_queries = {
 	{-1, -1},
 	{0, 0},
 	{1, 1},
-	{1, 0}
+	{1, 0},
+	{-1, 1},
+	{1, -1}
 };
 
 TYPED_TEST(Range_Minimum_Query_Test, ThrowsExceptionOnInvalidQuery) {
@@ -42,6 +57,7 @@ TYPED_TEST(Range_Minimum_Query_Test, ThrowsExceptionOnInvalidQuery) {
 }
 
 TYPED_TEST(Range_Minimum_Query_Test, ReturnsExpectedWithinBounds) {
+
 }
 
 TYPED_TEST(Range_Minimum_Query_Test, ReturnsExpectedWithMultipleCalls) {
