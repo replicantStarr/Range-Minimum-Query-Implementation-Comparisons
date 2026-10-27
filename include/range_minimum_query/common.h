@@ -19,6 +19,6 @@ namespace range_minimum_query {
 	// Custom exception for invalid queries {a, b} where b <= a.
 	class Invalid_Query_Exception : public std::logic_error {
 		using std::logic_error::logic_error;
-	}
+	};
 }
 
