@@ -1,5 +1,4 @@
-#ifndef	FISCHER_HEUN_H
-#define FISCHER_HEUN_H
+#pragma once
 
 #include "range_minimum_query/common.h"
 #include <vector>
@@ -12,10 +11,7 @@ namespace range_minimum_query {
 	public:
 		// Constructor is measure with array A
 		Fischer_Heun(const std::vector<int>& a);
-		// Destructor to remove all allocated memory
-		~Fischer_Heun();
 		// The main query function, can take any amount of queries
-		std::vector<int> Query(const std::vector<Query>& queries);
+		std::vector<int> query(const std::vector<Query>& queries);
 	};
 }
-#endif

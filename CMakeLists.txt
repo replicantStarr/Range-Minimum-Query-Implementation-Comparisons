@@ -41,7 +41,7 @@ target_compile_options(range_minimum_query PRIVATE -Wall -Wextra -Wpedantic)
 enable_testing()
 include(GoogleTest)
 
-foreach(algo sparse_table segment_tree fischer_heun)
+foreach(algo common sparse_table segment_tree fischer_heun)
 	add_executable(test_${algo} tests/test_${algo}.cpp)
 	target_link_libraries(test_${algo} PRIVATE range_minimum_query GTest::gtest_main)
 	gtest_discover_tests(test_${algo})
