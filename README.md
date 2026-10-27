@@ -13,11 +13,6 @@ cmake --build build -j
 ctest --test-dir build --output-on-failure
 ```
 
-## INDIVIDUAL ALGORITHMS
-```sh
-./build/test_${algorithm}
-```
-
 # HOW TO RUN BENCHMARKS
 ```sh
 ./build/range_minimum_query_bench

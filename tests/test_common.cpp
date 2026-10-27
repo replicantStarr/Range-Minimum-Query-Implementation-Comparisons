@@ -2,21 +2,60 @@
 #include "range_minimum_query/fischer_heun.h"
 #include "range_minimum_query/sparse_table.h"
 #include "range_minimum_query/segment_tree.h"
-
-template <typename T>
-struct Range_Minimum_Query_Test: ::testing::Test {};
-
-using Implementations = ::testing::Types<range_minimum_query::Fischer_Heun, range_minimum_query::Sparse_Table, range_minimum_query::Segment_Tree>;
+#include "common.h"
 
 TYPED_TEST_SUITE(Range_Minimum_Query_Test, Implementations);
 
-TYPED_TEST(Range_Minimum_Query_Test, ReturnsEmptyOnEmpty) {
+TYPED_TEST(Range_Minimum_Query_Test, AlwaysThrowsWhenArrayIsEmpty) {
 	std::vector<int> a;
 	TypeParam imp(a);
 
-	std::vector<int> ans = imp.query({{0, 0}});
+	ASSERT_THROW(imp.query({{0, 1}}), std::out_of_range);
+}
 
-	ASSERT_TRUE(ans.empty());
+TYPED_TEST(Range_Minimum_Query_Test, ThrowsExceptionOnOutOfBounds) {
+	TypeParam imp(generic_array);
+
+	for (size_t i = 0; i < out_of_bounds_queries.size(); ++i) {
+		SCOPED_TRACE("Out of Bound " + std::to_string(i));
+		EXPECT_THROW(imp.query({out_of_bounds_queries[i]}), std::out_of_range);
+	}
+}
+
+TYPED_TEST(Range_Minimum_Query_Test, ThrowsExceptionOnInvalidQuery) {
+	TypeParam imp(generic_array);
+
+	for (size_t i = 0; i < invalid_queries.size(); ++i) {
+		SCOPED_TRACE("Invalid Query " + std::to_string(i));
+		EXPECT_THROW(imp.query({invalid_queries[i]}), range_minimum_query::Invalid_Query_Exception);
+	}
+}
+
+TYPED_TEST(Range_Minimum_Query_Test, ReturnsExpectedWithinBounds) {
+	for (const auto& test_case: valid_cases) {
+		SCOPED_TRACE(test_case.name);
+		TypeParam imp(test_case.arr);
+
+		std::vector<int> ans = imp.query(test_case.queries);
+		
+		ASSERT_EQ(ans.size(), test_case.queries.size());
+
+		for (size_t i = 0; i < test_case.queries.size(); ++i) {
+			EXPECT_EQ(ans[i], test_case.exp[i]);
+		}
+	}
+}
+
+TYPED_TEST(Range_Minimum_Query_Test, ReturnsExpectedWithMultipleCalls) {
+	for (const auto& test_case: valid_cases) {
+		SCOPED_TRACE("Individual " + test_case.name);
+		TypeParam imp(test_case.arr);
+		for (size_t i = 0; i < test_case.queries.size(); ++i) {
+			std::vector<int> ans = imp.query({test_case.queries[i]});
+			EXPECT_EQ(ans.size(), 1);
+			EXPECT_EQ(ans[0], test_case.exp[i]);
+		}
+	}
 }
 
 
