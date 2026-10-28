@@ -37,7 +37,7 @@ TYPED_TEST(Range_Minimum_Query_Test, ReturnsExpectedValueWithValidQuery) {
 
 		for (size_t i = 0; i < test_case.ranges.size(); ++i) {
 			TypeParam imp(test_case.arr);
-			EXPECT_EQ(imp.query(test_case.ranges[i], test_case.exp[i]);
+			EXPECT_EQ(imp.query(test_case.ranges[i]), test_case.exp[i]);
 		}
 	}
 }
@@ -47,9 +47,7 @@ TYPED_TEST(Range_Minimum_Query_Test, ReturnsExpectedValuesWithSequentialValidQue
 		SCOPED_TRACE("Individual " + test_case.name);
 		TypeParam imp(test_case.arr);
 		for (size_t i = 0; i < test_case.ranges.size(); ++i) {
-			std::vector<int> ans = imp.query({test_case.ranges[i]});
-			EXPECT_EQ(ans.size(), 1);
-			EXPECT_EQ(ans[0], test_case.exp[i]);
+			EXPECT_EQ(imp.query(test_case.ranges[i]), test_case.exp[i]);
 		}
 	}
 }
