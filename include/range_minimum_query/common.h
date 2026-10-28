@@ -7,6 +7,7 @@
  */
 
 #include <stdexcept>
+#include <array>
 
 namespace range_minimum_query {
 	// Simple compile-time alias so there is no overhead.
