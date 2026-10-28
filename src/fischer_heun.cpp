@@ -9,6 +9,10 @@ namespace range_minimum_query {
 	
 
 
+	// The constructor is the pre-processing phase of the algorithm.
+	// It takes an array (vector in this case) of integers, and this becomes the only queryable data.  
+	// To query newer data, a new class must be instantiated.
+	//
 	Fischer_Heun::Fischer_Heun([[maybe_unused]] const std::vector<int>& a) {
 
 	}
