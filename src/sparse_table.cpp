@@ -5,5 +5,7 @@ namespace range_minimum_query {
 	Sparse_Table::Sparse_Table([[maybe_unused]] const std::vector<int>& a) {
 	}
 
-	int Sparse_Table::Sparse_Table([[maybe_unused]] Range range) return 0;
+	int Sparse_Table::query([[maybe_unused]] Range range) {
+		return 0;
+	}
 }

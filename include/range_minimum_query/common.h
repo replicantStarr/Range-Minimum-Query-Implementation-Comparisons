@@ -6,7 +6,6 @@
  * It makes tesing simple -- we only need to write one set of tests.
  */
 
-#include <vector>
 #include <stdexcept>
 
 namespace range_minimum_query {
