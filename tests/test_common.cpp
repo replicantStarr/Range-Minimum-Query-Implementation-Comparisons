@@ -10,7 +10,7 @@ TYPED_TEST(Range_Minimum_Query_Test, AlwaysThrowsWhenArrayIsEmpty) {
 	std::vector<int> a;
 	TypeParam imp(a);
 
-	ASSERT_THROW(imp.query({{0, 1}}), std::out_of_range);
+	ASSERT_THROW(imp.query({0, 1}), std::out_of_range);
 }
 
 TYPED_TEST(Range_Minimum_Query_Test, ThrowsExceptionOnOutOfBounds) {
@@ -18,7 +18,7 @@ TYPED_TEST(Range_Minimum_Query_Test, ThrowsExceptionOnOutOfBounds) {
 
 	for (size_t i = 0; i < out_of_bounds_queries.size(); ++i) {
 		SCOPED_TRACE("Out of Bound " + std::to_string(i));
-		EXPECT_THROW(imp.query({out_of_bounds_queries[i]}), std::out_of_range);
+		EXPECT_THROW(imp.query(out_of_bounds_queries[i]), std::out_of_range);
 	}
 }
 
@@ -27,26 +27,22 @@ TYPED_TEST(Range_Minimum_Query_Test, ThrowsExceptionOnInvalidQuery) {
 
 	for (size_t i = 0; i < invalid_queries.size(); ++i) {
 		SCOPED_TRACE("Invalid Query " + std::to_string(i));
-		EXPECT_THROW(imp.query({invalid_queries[i]}), range_minimum_query::Invalid_Query_Exception);
+		EXPECT_THROW(imp.query(invalid_queries[i]), range_minimum_query::Invalid_Query_Exception);
 	}
 }
 
-TYPED_TEST(Range_Minimum_Query_Test, ReturnsExpectedWithinBounds) {
+TYPED_TEST(Range_Minimum_Query_Test, ReturnsExpectedValueWithValidQuery) {
 	for (const auto& test_case: valid_cases) {
 		SCOPED_TRACE(test_case.name);
-		TypeParam imp(test_case.arr);
-
-		std::vector<int> ans = imp.query(test_case.queries);
-		
-		ASSERT_EQ(ans.size(), test_case.queries.size());
 
 		for (size_t i = 0; i < test_case.queries.size(); ++i) {
-			EXPECT_EQ(ans[i], test_case.exp[i]);
+			TypeParam imp(test_case.arr);
+			EXPECT_EQ(imp.query(test_case.queries[i], test_case.exp[i]);
 		}
 	}
 }
 
-TYPED_TEST(Range_Minimum_Query_Test, ReturnsExpectedWithMultipleCalls) {
+TYPED_TEST(Range_Minimum_Query_Test, ReturnsExpectedValuesWithSequentialValidQueries) {
 	for (const auto& test_case: valid_cases) {
 		SCOPED_TRACE("Individual " + test_case.name);
 		TypeParam imp(test_case.arr);
