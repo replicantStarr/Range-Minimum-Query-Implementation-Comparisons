@@ -13,5 +13,8 @@ namespace range_minimum_query {
 		Fischer_Heun(const std::vector<int>& a);
 		// The main query function, can take any amount of queries
 		int query(Range range);
+	
+	private:
+		std::vector<int>& a;
 	};
 }
