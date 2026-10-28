@@ -9,14 +9,14 @@ using Implementations = ::testing::Types<range_minimum_query::Fischer_Heun, rang
 
 inline const std::vector<int> generic_array = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-inline const std::vector<range_minimum_query::Query> out_of_bounds_queries = {
+inline const std::vector<range_minimum_query::Range> out_of_bounds_ranges = {
 	{0, 12},
 	{5, 12},
 	{11, 12},
 	{12, 13}
 };
 
-inline const std::vector<range_minimum_query::Query> invalid_queries = {
+inline const std::vector<range_minimum_query::Range> invalid_ranges = {
 	{0, 0},
 	{1, 1},
 	{1, 0},
@@ -25,7 +25,7 @@ inline const std::vector<range_minimum_query::Query> invalid_queries = {
 struct Test_Case {
 	std::string name;
 	std::vector<int> arr;
-	std::vector<range_minimum_query::Query> queries;
+	std::vector<range_minimum_query::Range> ranges;
 	std::vector<int> exp;
 };
 
