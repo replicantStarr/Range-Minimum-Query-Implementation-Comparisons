@@ -12,6 +12,6 @@ namespace range_minimum_query {
 		// Constructor is measure with array A
 		Fischer_Heun(const std::vector<int>& a);
 		// The main query function, can take any amount of queries
-		std::vector<int> query(const std::vector<Query>& queries);
+		int query(Range range);
 	};
 }
