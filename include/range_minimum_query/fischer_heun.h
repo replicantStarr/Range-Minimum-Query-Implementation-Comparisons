@@ -18,5 +18,6 @@ namespace range_minimum_query {
 	private:
 		using Table = std::vector<std::vector<int>>;
 		std::unordered_map<std::string, Table>
+		size_t block_size;
 	};
 }

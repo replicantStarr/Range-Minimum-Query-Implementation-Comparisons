@@ -33,16 +33,28 @@ namespace range_minimum_query {
 
 
 	// Given a vector and block size, it will return the lowest value per block.
-	std::vector<int> create_summary(int block, 
-			const std::vector<int>& a) {
+	std::vector<int> create_summary(const std::vector<int>& a) {
+		std::vector<int> summary;
+		for (size_t i = 0; i < a.size(); i += block_size) {
+			int m = INT_MAX;
+			for (size_t j = i; j < i + block_size; ++j) {
+				m = std::min(m, a[j]);
+			}
 
+			summary.push_back(m);
+		}
+
+		return summary;
 	}
 
 	// now creates a sparse table based on the summary to allow for quick lookup
-	std::vector<std::vector<int>> create_sparse_table(int i, int j, 
-			const std::vector<std::vector<int>>& summary) {
-		for (size_t _i = i; _i < j; ++i) {
+	std::vector<std::vector<int>> create_sparse_table(const std::vector<std::vector<int>>& summary) {
+		std::vector<std::vector<int>> sparse_table(summary.size(), std::vector<int>(block_size, std::vector<int>));
 
+		for (size_t i = 0; i < summary.size(); ++i) {
+			for (size_t j = 0; j < block_size; ++j) {
+				
+			}
 		}
 	}
 
@@ -62,7 +74,7 @@ namespace range_minimum_query {
 				stack.pop();
 				cartesian_number += "0";
 			}
-
+1
 			stack.push(block[_i]);
 			cartesian_number += "1";
 		}
@@ -82,9 +94,8 @@ namespace range_minimum_query {
 	}
 
 	Fischer_Heun::Fischer_Heun(const std::vector<int>& a) {
-
 		// derived as the most optimal block size
-		int b = 0.5*std::log2(a);
+		block_size = 0.5*std::log2(a.size());
 
 		for (size_t i = 0; i < a.size(); i += b) {
 			create_cartesian_number(i, i + b, a);
