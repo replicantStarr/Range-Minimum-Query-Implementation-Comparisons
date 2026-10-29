@@ -2,6 +2,7 @@
 
 #include "range_minimum_query/common.h"
 #include <vector>
+#include <unordered_map>
 
 namespace range_minimum_query {
 
@@ -15,6 +16,7 @@ namespace range_minimum_query {
 		int query(Range range);
 	
 	private:
-		std::vector<int>& a;
+		using Table = std::vector<std::vector<int>>;
+		std::unordered_map<std::string, Table>
 	};
 }

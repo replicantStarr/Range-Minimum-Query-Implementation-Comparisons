@@ -41,12 +41,25 @@ namespace range_minimum_query {
 	// now creates a sparse table based on the summary to allow for quick lookup
 	std::vector<std::vector<int>> create_sparse_table(int i, int j, 
 			const std::vector<std::vector<int>>& summary) {
-		return {};
+		for (size_t _i = i; _i < j; ++i) {
+
+		}
 	}
 
 	std::string create_cartesian_number(int i, int j,
 			const std::vector<int>& block) {
 		return "";
+	}
+
+	Table create_cartesian_table(const std::vector<int>& block) {
+		Table table(block.size(), std::vector<int>(block.size(), INT_MAX));
+		for (size_t i = 0; i < block.size(); ++i) {
+			for (size_t j = i; j < block.size(); ++j) {
+				table[i][j] = std::min(table[i][j-1], block[j]);
+			}
+		}
+
+		return table;
 	}
 
 	Fischer_Heun::Fischer_Heun(const std::vector<int>& a) {
