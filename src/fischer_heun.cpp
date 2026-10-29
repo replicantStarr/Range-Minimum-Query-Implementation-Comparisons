@@ -39,11 +39,13 @@ namespace range_minimum_query {
 	}
 
 	// now creates a sparse table based on the summary to allow for quick lookup
-	std::vector<std::vector<int>> create_sparse_table(const std::vector<std::vector<int>>& summary) {
+	std::vector<std::vector<int>> create_sparse_table(int i, int j, 
+			const std::vector<std::vector<int>>& summary) {
 		return {};
 	}
 
-	std::string create_cartesian_number(const std::vector<int>& block) {
+	std::string create_cartesian_number(int i, int j,
+			const std::vector<int>& block) {
 		return "";
 	}
 
@@ -52,8 +54,10 @@ namespace range_minimum_query {
 		// derived as the most optimal block size
 		int b = 0.5*std::log2(a);
 
-
-
+		for (size_t i = 0; i < a.size(); i += b) {
+			create_cartesian_number(i, i + b, a);
+			create_cartesian_table(
+		}
 	}
 
 	int Fischer_Heun::query([[maybe_unused]] Range range) {
