@@ -48,7 +48,26 @@ namespace range_minimum_query {
 
 	std::string create_cartesian_number(int i, int j,
 			const std::vector<int>& block) {
-		return "";
+		std::stack<int> stack;
+		std::string cartesian_number = "";
+
+		for (size_t _i = i; _i < j; ++i) {
+			if (stack.empty()) {
+				stack.push(block[_i]);
+				cartesian_number += "1";
+				continue;
+			}
+
+			while (stack.top() > block[_i]) {
+				stack.pop();
+				cartesian_number += "0";
+			}
+
+			stack.push(block[_i]);
+			cartesian_number += "1";
+		}
+
+		return cartesian_number;
 	}
 
 	Table create_cartesian_table(const std::vector<int>& block) {
