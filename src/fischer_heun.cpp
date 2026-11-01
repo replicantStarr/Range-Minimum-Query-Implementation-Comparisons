@@ -2,6 +2,7 @@
 #include "range_minimum_query/common.h"
 #include <cmath>
 #include <unordered_map>
+#include <cstdint>
 
 namespace range_minimum_query {
 
@@ -12,8 +13,8 @@ namespace range_minimum_query {
 	//
 	// A high-level explanation for construction is as follows:
 	// 	1. The array is passed
-	// 	2. Divide it into blocks 
-	// 	3. Build a cartesian block
+	// 	2. Divide it into blocks of size 1/2logn
+	// 	3. Build a cartesian block -- a cartesian tree can be represented as a binary string 1010 where 1 is push and 0 is pop.
 	// 	4. If the block already exists in hashmap do nothing
 	// 	5. Otherwise, create a cartesian table for the block.
 	// 	6. Add the index of that point to the summary.
@@ -58,7 +59,7 @@ namespace range_minimum_query {
 		}
 	}
 
-	std::string create_cartesian_number(int i, int j,
+	std::uint64_t create_cartesian_number(int i, int j,
 			const std::vector<int>& block) {
 		std::stack<int> stack;
 		std::string cartesian_number = "";
@@ -82,6 +83,26 @@ namespace range_minimum_query {
 		return cartesian_number;
 	}
 
+	std::uint64_t create_cartesian_number(const int* i, const int* j) {
+		std::uint64_t cartesian_number = 1;
+		std::stack<int> stack;
+		stack.push(i);
+		++i;
+
+		for(; i < j; ++i) {
+			while (stack.top() > i) {
+				stack.pop();
+				cartesian_number << 1;
+			}
+
+			stack.push(i);
+			cartesian_number << 1;
+			cartesian_number += 1;
+		}
+
+		return cartesian_number;
+	}
+
 	Table create_cartesian_table(const std::vector<int>& block) {
 		Table table(block.size(), std::vector<int>(block.size(), INT_MAX));
 		for (size_t i = 0; i < block.size(); ++i) {
@@ -98,8 +119,9 @@ namespace range_minimum_query {
 		block_size = 0.5*std::log2(a.size());
 
 		for (size_t i = 0; i < a.size(); i += b) {
-			create_cartesian_number(i, i + b, a);
-			create_cartesian_table(
+			build_cartesian_block();
+			build_sparse_table();
+
 		}
 	}
 
