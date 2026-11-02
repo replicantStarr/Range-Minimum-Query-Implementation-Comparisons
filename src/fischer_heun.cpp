@@ -83,14 +83,14 @@ namespace range_minimum_query {
 		return cartesian_number;
 	}
 
-	std::uint64_t create_cartesian_number(const int* i, const int* j) {
-		std::uint64_t cartesian_number = 1;
+	std::pair<std::uint64_t, int> create_cartesian_number(const int* i, const int* j) {
+		int min = INT_MAX;
+		std::uint64_t cartesian_number = 0;
 		std::stack<int> stack;
-		stack.push(i);
-		++i;
 
 		for(; i < j; ++i) {
-			while (stack.top() > i) {
+			min = std::min(min, i);
+			while (!stack.empty() && stack.top() > i) {
 				stack.pop();
 				cartesian_number << 1;
 			}
@@ -100,28 +100,32 @@ namespace range_minimum_query {
 			cartesian_number += 1;
 		}
 
-		return cartesian_number;
+		return std::make_pair(cartesian_number, min);
 	}
 
-	Table create_cartesian_table(const std::vector<int>& block) {
-		Table table(block.size(), std::vector<int>(block.size(), INT_MAX));
-		for (size_t i = 0; i < block.size(); ++i) {
-			for (size_t j = i; j < block.size(); ++j) {
-				table[i][j] = std::min(table[i][j-1], block[j]);
+	Table create_cartesian_table(std::uint64_t cartesian_number, const int* i) {
+		Table table(block.size(), std::vector<int>(block.size(), 0));
+
+		for (int _i = 0; _i < i / block_size; ++_i) {
+			table[_i][_i] = (i + _i)*;
+			for (int j = i + 1; j < block_size; ++j) {
+				table[_i][j] = std::min(table[_i][j-1], (i + j)*);
 			}
 		}
 
-		return table;
+		cartesian_tables[cartesian_number] = table;
 	}
 
 	Fischer_Heun::Fischer_Heun(const std::vector<int>& a) {
-		// derived as the most optimal block size
 		block_size = 0.5*std::log2(a.size());
 
 		for (size_t i = 0; i < a.size(); i += b) {
-			build_cartesian_block();
-			build_sparse_table();
+			std::pair<std::uint64_t, int> cartesian_number = create_cartesian_number(&a[i], &a[b]);
+			if (!cartesian_tables.contains(cartesian_number.first)) {
+				create_cartesian_table(cartesian_number.first);
+			}
 
+			summary.push_back(cartesian_number.second);
 		}
 	}
 
