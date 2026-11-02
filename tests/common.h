@@ -5,7 +5,12 @@
 template <typename T>
 struct Range_Minimum_Query_Test: ::testing::Test {};
 
-using Implementations = ::testing::Types<range_minimum_query::Fischer_Heun, range_minimum_query::Sparse_Table, range_minimum_query::Segment_Tree>;
+using Implementations = ::testing::Types<
+	range_minimum_query::Fischer_Heun, 
+	range_minimum_query::Sparse_Table, 
+	range_minimum_query::Segment_Tree,
+	range_minimum_query::Linear,
+	range_minimum_query::Naive>;
 
 inline const std::vector<int> generic_array = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
