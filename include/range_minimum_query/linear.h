@@ -1,6 +1,7 @@
 #pragma once
 
 #include "range_minimum_query/common.h"
+#include <vector>
 
 namespace range_minimum_query {
 	class Linear {
@@ -8,6 +9,6 @@ namespace range_minimum_query {
 		Linear(const std::vector<int>& a);
 		int query(Range range);
 	private:
-		std::vector<int> vec;
-	}
+		const std::vector<int>& vec;
+	};
 }

@@ -2,6 +2,8 @@
 #include "range_minimum_query/fischer_heun.h"
 #include "range_minimum_query/sparse_table.h"
 #include "range_minimum_query/segment_tree.h"
+#include "range_minimum_query/linear.h"
+#include "range_minimum_query/naive.h"
 #include "common.h"
 
 TYPED_TEST_SUITE(Range_Minimum_Query_Test, Implementations);

@@ -12,16 +12,16 @@ namespace range_minimum_query {
 	class Fischer_Heun {
 	public:
 		// Constructor is measure with array A
-		Fischer_Heun(const std::vector<int>& a);
+		Fischer_Heun(const std::vector<int>& a_);
 		// The main query function, can take any amount of queries
 		int query(Range range);
 	
 	private:
 		using Table = std::vector<std::vector<int>>;
 
-		void create_sparse_table(int i, int j);
-		std::pair<std::uint64_t, int> create_cartesian_number(int i, int j, const std::vector<int>& a);
-		Table create_cartesian_table(std::uint64_t cartesian_number, int i, int j, const std::vector<int>& a);
+		void create_sparse_table();
+		std::pair<std::uint64_t, int> create_cartesian_number(int i, int j);
+		void create_cartesian_table(const std::uint64_t cartesian_number, int i, int j);
 
 		std::unordered_map<std::uint64_t, Table> cartesian_tables;
 		std::vector<std::uint64_t> cartesian_numbers;
