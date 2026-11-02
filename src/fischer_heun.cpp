@@ -31,56 +31,19 @@ namespace range_minimum_query {
 	// It takes an array (vector in this case) of integers, and this becomes the only queryable data.  
 	// To query newer data, a new class must be instantiated.
 	//
+	//
+	
 
-
-	// Given a vector and block size, it will return the lowest value per block.
-	std::vector<int> create_summary(const std::vector<int>& a) {
-		std::vector<int> summary;
-		for (size_t i = 0; i < a.size(); i += block_size) {
-			int m = INT_MAX;
-			for (size_t j = i; j < i + block_size; ++j) {
-				m = std::min(m, a[j]);
-			}
-
-			summary.push_back(m);
+	void create_sparse_table(const int* i) {
+		for (int _i = 0; _i < _i + block_size; ++_i) {
+			sparse_table[_i] = (i + _i)*;
 		}
 
-		return summary;
-	}
-
-	// now creates a sparse table based on the summary to allow for quick lookup
-	std::vector<std::vector<int>> create_sparse_table(const std::vector<std::vector<int>>& summary) {
-		std::vector<std::vector<int>> sparse_table(summary.size(), std::vector<int>(block_size, std::vector<int>));
-
-		for (size_t i = 0; i < summary.size(); ++i) {
-			for (size_t j = 0; j < block_size; ++j) {
-				
+		for (int j = 1; j < std::log2(block_size); ++j) {
+			for (; i < i + block_size; ++i) {
+				summary[i][j] = std::min(summary[i
 			}
 		}
-	}
-
-	std::uint64_t create_cartesian_number(int i, int j,
-			const std::vector<int>& block) {
-		std::stack<int> stack;
-		std::string cartesian_number = "";
-
-		for (size_t _i = i; _i < j; ++i) {
-			if (stack.empty()) {
-				stack.push(block[_i]);
-				cartesian_number += "1";
-				continue;
-			}
-
-			while (stack.top() > block[_i]) {
-				stack.pop();
-				cartesian_number += "0";
-			}
-1
-			stack.push(block[_i]);
-			cartesian_number += "1";
-		}
-
-		return cartesian_number;
 	}
 
 	std::pair<std::uint64_t, int> create_cartesian_number(const int* i, const int* j) {
@@ -127,9 +90,11 @@ namespace range_minimum_query {
 
 			summary.push_back(cartesian_number.second);
 		}
+
+		create_sparse_table();
 	}
 
 	int Fischer_Heun::query([[maybe_unused]] Range range) {
-		return 0;
+
 	}
 }
