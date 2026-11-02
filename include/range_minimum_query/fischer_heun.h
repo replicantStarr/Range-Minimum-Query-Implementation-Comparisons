@@ -18,10 +18,17 @@ namespace range_minimum_query {
 	
 	private:
 		using Table = std::vector<std::vector<int>>;
-		std::unordered_map<std::uint64_t, Table> cartesian_tables;
-		std::vector<int> sparse_table;
-		Table summary;
-		size_t block_size;
 
+		void create_sparse_table(int i, int j);
+		std::pair<std::uint64_t, int> create_cartesian_number(int i, int j, const std::vector<int>& a);
+		Table create_cartesian_table(std::uint64_t cartesian_number, int i, int j, const std::vector<int>& a);
+
+		std::unordered_map<std::uint64_t, Table> cartesian_tables;
+		std::vector<std::uint64_t> cartesian_numbers;
+		Table sparse_table;
+		std::vector<int> summary;
+		std::vector<int> a;
+
+		size_t block_size;
 	};
 }
