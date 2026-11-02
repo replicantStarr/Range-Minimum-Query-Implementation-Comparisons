@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <stack>
 #include <climits>
+#include <iostream>
 
 namespace range_minimum_query {
 
@@ -37,9 +38,11 @@ namespace range_minimum_query {
 	
 
 	void Fischer_Heun::create_sparse_table() {
+		std::cout << "creating table" << std::endl;
 		for (size_t i = 0; i < summary.size(); ++i) {
 			sparse_table[i][0] = i;
 		}
+		std::cout << "sparse initialised" << std::endl;
 
 		for (int j = 1; j < std::log2((int)summary.size()); ++j) {
 			for (int i = 0; i < j; ++i) {
@@ -82,22 +85,29 @@ namespace range_minimum_query {
 		cartesian_tables[cartesian_number] = table;
 	}
 
-	Fischer_Heun::Fischer_Heun(const std::vector<int>& a_) : a(a_), block_size(0.5*std::log2(a.size())) {
+	Fischer_Heun::Fischer_Heun(const std::vector<int>& a_) : sparse_table(a.size(), std::vector<int>(std::log2(a.size()), 0)), a(a_), block_size(0.5*std::log2(a.size())) {
 		for (size_t i = 0; i < a.size(); i += block_size) {
+			std::cout << i << std::endl;
 			size_t j = i + block_size > a.size() ? a.size() : i + block_size;
 			std::pair<std::uint64_t, int> cartesian_number = create_cartesian_number(i, j);
+			std::cout << "cartesian number created" << std::endl;
 
 			if (!cartesian_tables.contains(cartesian_number.first)) create_cartesian_table(cartesian_number.first, i, j);
+			std::cout << "created table" << std::endl;
 
 			summary.push_back(cartesian_number.second);
+			std::cout << "added to summary" << std::endl;
 			cartesian_numbers.push_back(cartesian_number.first);
+			std::cout << "added to numbers" << std::endl;
 		}
 
 		create_sparse_table();
+		std::cout << "sparse table created" << std::endl;
 	}
 
 	int Fischer_Heun::query(Range range) {
-		if (range[0] >= range[1] || range[1] > a.size()) throw Invalid_Query_Exception("Test");
+		if (range[0] >= range[1]) throw Invalid_Query_Exception("Test");
+		if (range[1] >= a.size()) throw std::out_of_range("Test");
 
 		return std::min(sparse_table[(range[0] + block_size) / block_size][std::log2(range[0] - range[1])], 
 				std::min(cartesian_tables[cartesian_numbers[range[0] / block_size]][range[0] % block_size][block_size - 1],
