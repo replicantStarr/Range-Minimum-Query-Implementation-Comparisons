@@ -7,10 +7,10 @@ namespace range_minimum_query {
 	Segment_Tree::Segment_Tree(const std::vector<int>& a) {
 
 		//Initialising the size of the segment tree
-		int inputSize{ static_cast<int>(a.size()) };
-		int leaves{ 1 };
+		n = a.size();
+		leaves = 1;
 
-		while (leaves < inputSize) leaves *= 2;
+		while (leaves < static_cast<int>(n)) leaves *= 2;
 
 		segmentTree = std::vector<int>(leaves * 2 - 1, INT_MAX);
 		
@@ -42,12 +42,17 @@ namespace range_minimum_query {
 
 	}
 
-	std::vector<int> Segment_Tree::query(const std::vector<Query>& queries) {
+	int Segment_Tree::query(Range range) {
 
-		std::vector<int> results;
-		for (const Query& q : queries) {
-			results.push_back(rangeMin(0, 0, leaves - 1, static_cast<int>(q[0]), static_cast<int>(q[1])));
+		//Check for errors within the range
+		if (range[0] > range[1]) {
+			throw Invalid_Query_Exception("range[0] is greater than range[1]");
 		}
-		return {0};
+		if (range[1] >= n) {
+			throw std::out_of_range("range[1] is greater than the size of the orginal array");
+		}
+
+		//Safe to query for result since they are both < n
+		return rangeMin(0, 0, leaves-1, static_cast<int>(range[0]), static_cast<int>(range[1]));
 	}
 }
