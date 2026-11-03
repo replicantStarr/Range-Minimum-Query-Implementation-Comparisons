@@ -7,10 +7,10 @@ namespace range_minimum_query {
 	Segment_Tree::Segment_Tree(const std::vector<int>& a) {
 
 		//Initialising the size of the segment tree
-		int inputSize{ static_cast<int>(a.size()) };
-		int leaves{ 1 };
+		n = a.size();
+		leaves = 1;
 
-		while (leaves < inputSize) leaves *= 2;
+		while (leaves < static_cast<int>(n)) leaves *= 2;
 
 		segmentTree = std::vector<int>(leaves * 2 - 1, INT_MAX);
 		
@@ -53,6 +53,6 @@ namespace range_minimum_query {
 		}
 
 		//Safe to query for result since they are both < n
-		return rangeMin(0, 0, leaves-1, static_cast<int>(range[0]), static_cast<int>(range[1]);
+		return rangeMin(0, 0, leaves-1, static_cast<int>(range[0]), static_cast<int>(range[1]));
 	}
 }
