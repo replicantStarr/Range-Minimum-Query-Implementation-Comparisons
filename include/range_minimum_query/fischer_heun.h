@@ -17,18 +17,20 @@ namespace range_minimum_query {
 		int query(Range range);
 	
 	private:
-		using Table = std::vector<std::vector<int>>;
-
+		std::pair<std::uint32_t, int> create_cartesian_number(size_t start, size_t end);
+		void create_cartesian_table(size_t start, size_t end);
 		void create_sparse_table();
-		std::pair<std::uint64_t, int> create_cartesian_number(int i, int j);
-		void create_cartesian_table(const std::uint64_t cartesian_number, int i, int j);
+		int linear_search(Range range);
+		std::array<size_t,3> find_block_info(size_t i);
 
-		std::unordered_map<std::uint64_t, Table> cartesian_tables;
-		std::vector<std::uint64_t> cartesian_numbers;
-		Table sparse_table;
-		std::vector<int> summary;
 		std::vector<int> a;
+		std::vector<int> summary;
+		std::vector<std::vector<int>> sparse_table;
+		std::vector<std::vector<int>> cartesian_tables;
+		std::vector<std::uint32_t> cartesian_reference;
 
 		size_t block_size;
 	};
+
+	size_t safe_log(size_t n);
 }

@@ -4,12 +4,12 @@
 #include <vector>
 
 namespace range_minimum_query {
-	class Naive {
+	class Naive_Linear {
 	public:
-		Naive(const std::vector<int>& a);
+		Naive_Linear(const std::vector<int>& a);
 		int query(Range range);
-
 	private:
-		std::vector<std::vector<int>> m;
+		// Only need to store the vector
+		const std::vector<int>& vec;
 	};
 }

@@ -33,8 +33,8 @@ add_library(range_minimum_query
 	src/sparse_table.cpp
 	src/segment_tree.cpp
 	src/fischer_heun.cpp
-	src/naive.cpp
-	src/linear.cpp
+	src/naive_linear.cpp
+	src/naive_block.cpp
 )
 
 target_include_directories(range_minimum_query PUBLIC include)
