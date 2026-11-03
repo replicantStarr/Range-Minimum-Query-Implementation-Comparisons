@@ -42,10 +42,10 @@ namespace range_minimum_query {
 
 	}
 
-	std::vector<int> Segment_Tree::query(const std::vector<Query>& queries) {
+	std::vector<int> Segment_Tree::query(const std::vector<Range>& range) {
 
 		std::vector<int> results;
-		for (const Query& q : queries) {
+		for (const Range& q : range) {
 			results.push_back(rangeMin(0, 0, leaves - 1, static_cast<int>(q[0]), static_cast<int>(q[1])));
 		}
 		return {0};
