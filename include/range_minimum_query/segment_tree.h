@@ -13,5 +13,6 @@ namespace range_minimum_query {
 	private:
 		std::vector<int> segmentTree;
 		int leaves;
+		int query(Range range);
 	};
 }
