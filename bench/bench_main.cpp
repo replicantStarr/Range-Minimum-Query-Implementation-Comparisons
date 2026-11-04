@@ -17,6 +17,11 @@ static void BM_Construct(benchmark::State& state, Generator generate) {
 		Imp imp(a);
 		benchmark::DoNotOptimize(imp);
 	}
+
+	const double bytes = measure_bytes([&] { return Imp(a); });
+	state.counters["bytes"] = benchmark::Counter(bytes, benchmark::Counter::kDefaults, benchmark::Counter:kIs1024);
+
+	state.counters["bytes/elem"] = bytes / size;
 }
 
 template <typename Imp>
@@ -34,6 +39,11 @@ static void BM_Query(benchmark::State& state, Query_Generator generate) {
 	}
 	
 	state.SetItemsProcessed(state.iterations());
+
+	const double bytes = measure_bytes([&] { return Imp(a); });
+	state.counters["bytes"] = benchmark::Counter(bytes, benchmark::Counter::kDefaults, benchmark::Counter:kIs1024);
+
+	state.counters["bytes/elem"] = bytes / size;
 }
 
 template <typename Imp>
@@ -51,6 +61,11 @@ static void BM_Multiple_Queries(benchmark::State& state) {
 			benchmark::DoNotOptimize(res);
 		}
 	}
+
+	const double bytes = measure_bytes([&] { return Imp(a); });
+	state.counters["bytes"] = benchmark::Counter(bytes, benchmark::Counter::kDefaults, benchmark::Counter:kIs1024);
+
+	state.counters["bytes/elem"] = bytes / size;
 }
 
 static void BM_FH_Different_Block_Sizes(benchmark::State& state) {
@@ -61,6 +76,11 @@ static void BM_FH_Different_Block_Sizes(benchmark::State& state) {
 		Fischer_Heun fhb = Fischer_Heun_Benchmark::create(a, b);
 		benchmark::DoNotOptimize(fhb);
 	}
+
+	const double bytes = measure_bytes([&] { return Imp(a); });
+	state.counters["bytes"] = benchmark::Counter(bytes, benchmark::Counter::kDefaults, benchmark::Counter:kIs1024);
+
+	state.counters["bytes/elem"] = bytes / size;
 }
 
 REGISTER_ALGORITHM(Naive_Linear, 1 << 24);

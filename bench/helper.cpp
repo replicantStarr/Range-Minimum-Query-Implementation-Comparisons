@@ -3,8 +3,25 @@
 #include <vector>
 #include <benchmark/benchmark.h>
 #include "range_minimum_query/common.h"
+#include <algorithm>
+#include <bit>
+#include <utility>
+#include <malloc.h>
+#include <cstddef>
 
 using namespace range_minimum_query; 
+
+inline std::size_t heap_bytes() {
+	const struct mallinfo2 info = mallinfo2();
+	return info.uordblks + info.hblkhd;
+}
+
+template <typename C>
+double measure_bytes(C c) {
+	const std::size_t before = heap_bytes();
+	auto object = c();
+	return static_cast<double>(heap_bytes() - before);
+}
 
 std::vector<int> make_random_array(size_t n) {
 	std::mt19937_64 random(42);
@@ -35,9 +52,10 @@ std::vector<Range> make_random_queries(size_t n) {
 	std::vector<Range> ranges(QUERY_BATCH);
 
 	for (auto& range: ranges) {
-		size_t len = n / 2 + random() % (n - n / 2);
-		size_t l = random() % (n - len + 1);
-		range = {l, l + len - 1};
+		size_t l = random() % n;
+		size_t r = random() % n;
+		if (l > r) std::swap(l, r);
+		range = {l, r};
 	}
 
 	return ranges;
@@ -61,7 +79,7 @@ std::vector<Range> make_long_queries(size_t n) {
 	std::vector<Range> ranges(QUERY_BATCH);
 	
 	for (auto& range: ranges) {
-		size_t len = n / 2 + random() % (n - n / 2);
+		size_t len = std::max<size_t>(1, n / 2 + random() % (n - n / 2));
 		size_t l = random() % (n - len + 1);
 		range = {l, l + len - 1};
 	}
