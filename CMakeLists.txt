@@ -47,6 +47,9 @@ add_executable(test_common tests/test_common.cpp)
 target_link_libraries(test_common PRIVATE range_minimum_query GTest::gtest_main)
 gtest_discover_tests(test_common)
 
-add_executable(range_minimum_query_bench bench/bench_main.cpp)
+add_executable(range_minimum_query_bench 
+	bench/bench_main.cpp
+	bench/helper.cpp
+)
 target_link_libraries(range_minimum_query_bench PRIVATE range_minimum_query benchmark::benchmark)
 target_compile_options(range_minimum_query_bench PRIVATE -O3 -march=native)

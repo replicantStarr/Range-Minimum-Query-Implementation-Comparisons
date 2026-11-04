@@ -1,4 +1,5 @@
 #include <benchmark/benchmark.h> 
+#include "bench/helper.h"
 #include "range_minimum_query/naive_linear.h" 
 #include "range_minimum_query/naive_block.h" 
 #include "range_minimum_query/segment_tree.h" 
@@ -25,5 +26,10 @@ BENCHMARK_TEMPLATE(BM_Construct, range_minimum_query::Naive_Block)->RangeMultipl
 BENCHMARK_TEMPLATE(BM_Construct, range_minimum_query::Segment_Tree)->RangeMultiplier(4)->Range(1 << 4, 1 << 24)->Unit(benchmark::kMicrosecond);
 BENCHMARK_TEMPLATE(BM_Construct, range_minimum_query::Sparse_Table)->RangeMultiplier(4)->Range(1 << 4, 1 << 24)->Unit(benchmark::kMicrosecond);
 BENCHMARK_TEMPLATE(BM_Construct, range_minimum_query::Fischer_Heun)->RangeMultiplier(4)->Range(1 << 4, 1 << 24)->Unit(benchmark::kMicrosecond);
+
+static void BM_Query_Sample_1(benchmark::State& state) {
+	const size_t size = state.range(0);
+	std::vector<int> x;
+}
 
 BENCHMARK_MAIN();
