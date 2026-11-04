@@ -1,7 +1,12 @@
-#include <benchmark/benchmark.h>
-#include "range_minimum_query/naive_linear.h"
+#include <benchmark/benchmark.h> 
+#include "range_minimum_query/naive_linear.h" 
+#include "range_minimum_query/naive_block.h" 
+#include "range_minimum_query/segment_tree.h" 
+#include "range_minimum_query/sparse_table.h" 
+#include "range_minimum_query/fischer_heun.h" 
 
-static void BM_NAIVE(benchmark::State& state) {
+template <typename Imp>
+static void BM_Construct(benchmark::State& state) {
 	const size_t size = state.range(0);
 	std::vector<int> x;
 	x.reserve(size);
@@ -10,11 +15,15 @@ static void BM_NAIVE(benchmark::State& state) {
 	}
 	
 	for (auto _ : state) {
-		range_minimum_query::Naive_Linear naive(x);
-		benchmark::DoNotOptimize(naive);
+		Imp imp(x);
+		benchmark::DoNotOptimize(imp);
 	}
 }
 
-BENCHMARK(BM_NAIVE)->RangeMultiplier(4)->Range(16, 4096);
+BENCHMARK_TEMPLATE(BM_Construct, range_minimum_query::Naive_Linear)->RangeMultiplier(4)->Range(1 << 4, 1 << 24)->Unit(benchmark::kMicrosecond);
+BENCHMARK_TEMPLATE(BM_Construct, range_minimum_query::Naive_Block)->RangeMultiplier(4)->Range(1 << 4, 1 << 24)->Unit(benchmark::kMicrosecond);
+BENCHMARK_TEMPLATE(BM_Construct, range_minimum_query::Segment_Tree)->RangeMultiplier(4)->Range(1 << 4, 1 << 24)->Unit(benchmark::kMicrosecond);
+BENCHMARK_TEMPLATE(BM_Construct, range_minimum_query::Sparse_Table)->RangeMultiplier(4)->Range(1 << 4, 1 << 24)->Unit(benchmark::kMicrosecond);
+BENCHMARK_TEMPLATE(BM_Construct, range_minimum_query::Fischer_Heun)->RangeMultiplier(4)->Range(1 << 4, 1 << 24)->Unit(benchmark::kMicrosecond);
 
 BENCHMARK_MAIN();
