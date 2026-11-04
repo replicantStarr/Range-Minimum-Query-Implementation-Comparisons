@@ -42,7 +42,7 @@ target_include_directories(range_minimum_query PUBLIC include)
 if(MSVC)
 	target_compile_options(range_minimum_query PRIVATE /W4)
 else()
-	target_compile_options(range_minimum_query PRIVATE -Wall -Wextra -Wpedantic)
+	target_compile_options(range_minimum_query PRIVATE -Wall -Wextra -Wpedantic -march=native)
 endif()
 
 enable_testing()

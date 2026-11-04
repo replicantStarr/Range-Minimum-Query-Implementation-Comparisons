@@ -4,10 +4,16 @@
 #include "range_minimum_query/common.h"
 #include <cstddef>
 
-#if defined(__GLIBC__) && __GLIBC_PREREQ(2, 33)
-	#include <malloc.h>
-	#define TRACK_MEMORY 1
-#else
+// __GLIBC_PREREQ only exists on glibc, so it needs its own #if inside the check.
+// On one line, the preprocessor still parses it and fails on other C libraries.
+#if defined(__GLIBC__)
+	#if __GLIBC_PREREQ(2, 33)
+		#include <malloc.h>
+		#define TRACK_MEMORY 1
+	#endif
+#endif
+
+#ifndef TRACK_MEMORY
 	#define TRACK_MEMORY 0
 #endif
 
@@ -72,3 +78,4 @@ std::vector<Range> make_long_queries(size_t n);
 std::vector<Range> make_single_queries(size_t n);
 void workload_sizes(benchmark::Benchmark* b, int64_t max_n);
 std::vector<int> make_same_blocks(size_t n);
+void non_powers_of_two(benchmark::Benchmark* b, int64_t max_n);

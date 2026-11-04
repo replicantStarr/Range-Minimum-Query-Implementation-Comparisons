@@ -26,7 +26,7 @@ namespace range_minimum_query {
 		int linear_search(Range range);
 		std::array<size_t,3> find_block_info(size_t i);
 
-		std::vector<int> a;
+		const std::vector<int>& a;
 		std::vector<int> summary;
 		std::vector<std::vector<int>> sparse_table;
 		std::vector<std::vector<int>> cartesian_tables;

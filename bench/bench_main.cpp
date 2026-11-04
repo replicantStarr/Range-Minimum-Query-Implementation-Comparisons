@@ -75,12 +75,24 @@ static void BM_FH_Different_Block_Sizes(benchmark::State& state) {
 #endif
 }
 
+
 REGISTER_ALGORITHM(Naive_Linear, 1 << 24);
-REGISTER_ALGORITHM(Naive_Block, 1 << 24);
+// Must be lowered as the memory consumption is far too high.
+REGISTER_ALGORITHM(Naive_Block, 1 << 14);
 REGISTER_ALGORITHM(Segment_Tree, 1 << 24);
 REGISTER_ALGORITHM(Sparse_Table, 1 << 24);
 REGISTER_ALGORITHM(Fischer_Heun, 1 << 24);
 
+// Testing segment tree without powers of two
+BENCHMARK_CAPTURE(BM_Construct<Segment_Tree>, random_non_power_of_two, make_random_array)
+	->Apply([](benchmark::Benchmark* b) { non_powers_of_two(b, 1 << 24); })
+	->ArgName("n")->Unit(benchmark::kMicrosecond);
+BENCHMARK_CAPTURE(BM_Query<Segment_Tree>, random_non_power_of_two, make_random_queries)
+	->Apply([](benchmark::Benchmark* b) { non_powers_of_two(b, 1 << 24); })
+	->ArgName("n")->Unit(benchmark::kMicrosecond);
+
+
+// Individual benchmark for constructing different block sizes
 BENCHMARK(BM_FH_Different_Block_Sizes)
 	->DenseRange(2, 16, 1)
 	->ArgName("b")

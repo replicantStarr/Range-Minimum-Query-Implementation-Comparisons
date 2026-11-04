@@ -109,3 +109,13 @@ std::vector<int> make_same_blocks(size_t n) {
 
 	return a;
 }
+
+void non_powers_of_two(benchmark::Benchmark* b, int64_t max_n) {
+	for (int i = 10; i <= 24; i +=2) {
+		const int64_t p = int64_t(1) << i;
+		if (p + p / 2 > max_n) break;
+		b->Arg(p);
+		b->Arg(p + 1);
+		b->Arg(p + p / 2);
+	}
+}
