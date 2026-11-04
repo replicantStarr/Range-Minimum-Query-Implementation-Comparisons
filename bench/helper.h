@@ -5,15 +5,13 @@
 
 using namespace range_minimum_query;
 
-#define REGISTER_BUILD(Alg, max_n)							\
+#define REGISTER_ALGORITHM(Alg, max_n)							\
 	BENCHMARK_CAPTURE(BM_Construct<Alg>, random, make_random_array)			\
 		->Apply([](benchmark::Benchmark* b) { powers_of_four(b, max_n); })	\
 		->ArgName("n")->Unit(benchmark::kMicrosecond);				\
 	BENCHMARK_CAPTURE(BM_Construct<Alg>, ascending, make_ascending_array)		\
 		->Apply([](benchmark::Benchmark* b) { powers_of_four(b, max_n); })	\
-		->ArgName("n")->Unit(benchmark::kMicrosecond)				
-
-#define REGISTER_QUERY(Alg, max_n)							\
+		->ArgName("n")->Unit(benchmark::kMicrosecond);				\
 	BENCHMARK_CAPTURE(BM_Query<Alg>, random, make_random_queries)			\
 		->Apply([](benchmark::Benchmark* b) { powers_of_four(b, max_n); })	\
 		->ArgName("n")->Unit(benchmark::kNanosecond);				\
@@ -25,9 +23,7 @@ using namespace range_minimum_query;
 		->ArgName("n")->Unit(benchmark::kNanosecond);				\
 	BENCHMARK_CAPTURE(BM_Query<Alg>, single, make_single_queries)			\
 		->Apply([](benchmark::Benchmark* b) { powers_of_four(b, max_n); })	\
-		->ArgName("n")->Unit(benchmark::kNanosecond)				
-
-#define REGISTER_MULTIPLE_QUERIES(Alg, max_n)						\
+		->ArgName("n")->Unit(benchmark::kNanosecond);				\
 	BENCHMARK(BM_Multiple_Queries<Alg>)						\
 		->Apply([](benchmark::Benchmark* b) { workload_sizes(b, max_n); })	\
 		->ArgNames({"n", "q"})							\

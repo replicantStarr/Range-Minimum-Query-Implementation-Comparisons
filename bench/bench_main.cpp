@@ -8,9 +8,6 @@
 
 using namespace range_minimum_query;
 
-using Generator = std::vector<int> (*)(size_t);
-using Query_Generator = std::vector<Range> (*)(size_t);
-
 template <typename Imp>
 static void BM_Construct(benchmark::State& state, Generator generate) {
 	const size_t size = state.range(0);
@@ -61,52 +58,21 @@ static void BM_FH_Different_Block_Sizes(benchmark::State& state) {
 	static const std::vector<int> a = make_random_array(1 << 20);
 
 	for (auto _ : state) {
-		Fisher_Heun_Benchmark fhb(a, b);
+		Fischer_Heun fhb = Fischer_Heun_Benchmark::create(a, b);
 		benchmark::DoNotOptimize(fhb);
 	}
 }
 
-#define REGISTER_BUILD(Alg, max_n)							\
-	BENCHMARK_CAPTURE(BM_Construct<Alg>, random, make_random_array)			\
-		->Apply([](benchmark::Benchmark* b) { powers_of_four(b, max_n); })	\
-		->ArgName("n")->Unit(benchmark::kMicrosecond);				\
-	BENCHMARK_CAPTURE(BM_Construct<Alg>, ascending, make_ascending_array)		\
-		->Apply([](benchmark::Benchmark* b) { powers_of_four(b, max_n); })	\
-		->ArgName("n")->Unit(benchmark::kMicrosecond)				
+REGISTER_ALGORITHM(Naive_Linear, 1 << 24);
+REGISTER_ALGORITHM(Naive_Block, 1 << 24);
+REGISTER_ALGORITHM(Segment_Tree, 1 << 24);
+REGISTER_ALGORITHM(Sparse_Table, 1 << 24);
+REGISTER_ALGORITHM(Fischer_Heun, 1 << 24);
 
-#define REGISTER_QUERY(Alg, max_n)							\
-	BENCHMARK_CAPTURE(BM_Query<Alg>, random, make_random_queries)			\
-		->Apply([](benchmark::Benchmark* b) { powers_of_four(b, max_n); })	\
-		->ArgName("n")->Unit(benchmark::kNanosecond);				\
-	BENCHMARK_CAPTURE(BM_Query<Alg>, short_range, make_short_queries)		\
-		->Apply([](benchmark::Benchmark* b) { powers_of_four(b, max_n); })	\
-		->ArgName("n")->Unit(benchmark::kNanosecond);				\
-	BENCHMARK_CAPTURE(BM_Query<Alg>, long_range, make_long_queries)			\
-		->Apply([](benchmark::Benchmark* b) { powers_of_four(b, max_n); })	\
-		->ArgName("n")->Unit(benchmark::kNanosecond);				\
-	BENCHMARK_CAPTURE(BM_Query<Alg>, single, make_single_queries)			\
-		->Apply([](benchmark::Benchmark* b) { powers_of_four(b, max_n); })	\
-		->ArgName("n")->Unit(benchmark::kNanosecond)				
-
-#define REGISTER_MULTIPLE_QUERIES(Alg, max_n)						\
-	BENCHMARK(BM_Multiple_Queries<Alg>)						\
-		->Apply([](benchmark::Benchmark* b) { workload_sizes(b, max_n); })	\
-		->ArgNames({"n", "q"})							\
-		->Unit(benchmark::kMillisecond)						
-
-
-
-/*
-REGISTER_BUILD(Naive_Linear, 1 << 24);
-REGISTER_BUILD(Fischer_Heun, 1 << 24);
-
-REGISTER_QUERY(Naive_Linear, 1 << 24);
-REGISTER_QUERY(Fischer_Heun, 1 << 24);
-*/
-
-BENCHMARK_CAPTURE(BM_Construct<Fischer_Heun>, same_blocks, make_same_blocks 
-
-REGISTER_MULTIPLE_QUERIES(Naive_Linear, 1 << 24);
+BENCHMARK(BM_FH_Different_Block_Sizes)
+	->DenseRange(2, 16, 1)
+	->ArgName("b")
+	->Unit(benchmark::kMillisecond);
 
 BENCHMARK_MAIN();
 

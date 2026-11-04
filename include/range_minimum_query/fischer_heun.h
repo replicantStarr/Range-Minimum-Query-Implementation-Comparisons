@@ -42,9 +42,9 @@ namespace range_minimum_query {
 			return Fischer_Heun(a, block_size);
 		}
 
-		static size_t block_size(const Fischer_Heun& fh) { return fh.block_size };
+		static size_t block_size(const Fischer_Heun& fh) { return fh.block_size; };
 		static size_t table_count(const Fischer_Heun& fh) { return fh.cartesian_tables.size(); };
-	}
+	};
 
 	size_t safe_log(size_t n);
 }
