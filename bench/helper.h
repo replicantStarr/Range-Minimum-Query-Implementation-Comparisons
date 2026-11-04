@@ -2,6 +2,15 @@
 #include <vector>
 #include <benchmark/benchmark.h>
 #include "range_minimum_query/common.h"
+#include <cstddef>
+
+#if defined(__GLIBC__) && __GLIBC_PREREQ(2, 33)
+	#include <malloc.h>
+	#define TRACK_MEMORY 1
+#else
+	#define TRACK_MEMORY 0
+#endif
+
 
 using namespace range_minimum_query;
 
@@ -31,6 +40,26 @@ using namespace range_minimum_query;
 
 using Generator = std::vector<int> (*)(size_t);
 using Query_Generator = std::vector<Range> (*)(size_t);
+
+inline std::size_t heap_bytes() {
+#if TRACK_MEMORY
+	const struct mallinfo2 info = mallinfo2();
+	return info.uordblks + info.hblkhd;
+#else
+	return 0;
+#endif
+}
+
+template <typename C>
+double measure_bytes(C c) {
+#if TRACK_MEMORY
+	const std::size_t before = heap_bytes();
+	auto object = c();
+	return static_cast<double>(heap_bytes() - before);
+#else
+	return 0;
+#endif
+}
 
 inline constexpr std::size_t QUERY_BATCH = 1 << 16;
 std::vector<int> make_random_array(size_t n);

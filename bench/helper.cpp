@@ -6,22 +6,8 @@
 #include <algorithm>
 #include <bit>
 #include <utility>
-#include <malloc.h>
-#include <cstddef>
 
 using namespace range_minimum_query; 
-
-inline std::size_t heap_bytes() {
-	const struct mallinfo2 info = mallinfo2();
-	return info.uordblks + info.hblkhd;
-}
-
-template <typename C>
-double measure_bytes(C c) {
-	const std::size_t before = heap_bytes();
-	auto object = c();
-	return static_cast<double>(heap_bytes() - before);
-}
 
 std::vector<int> make_random_array(size_t n) {
 	std::mt19937_64 random(42);

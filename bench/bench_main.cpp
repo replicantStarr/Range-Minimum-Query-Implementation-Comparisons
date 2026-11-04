@@ -18,32 +18,27 @@ static void BM_Construct(benchmark::State& state, Generator generate) {
 		benchmark::DoNotOptimize(imp);
 	}
 
+#if TRACK_MEMORY
 	const double bytes = measure_bytes([&] { return Imp(a); });
-	state.counters["bytes"] = benchmark::Counter(bytes, benchmark::Counter::kDefaults, benchmark::Counter:kIs1024);
+	state.counters["bytes"] = benchmark::Counter(bytes, benchmark::Counter::kDefaults, benchmark::Counter::kIs1024);
 
 	state.counters["bytes/elem"] = bytes / size;
-}
-
-template <typename Imp>
-static void BM_Query(benchmark::State& state, Query_Generator generate) {
-	const size_t size = state.range(0);
-	const std::vector<int> a = make_random_array(size);
+#endif 
+} 
+template <typename Imp> 
+static void BM_Query(benchmark::State& state, Query_Generator generate) { 
+	const size_t size = state.range(0); 
+	const std::vector<int> a = make_random_array(size); 
 	const std::vector<Range> queries = generate(size);
-	Imp imp(a);
 
+	Imp imp(a); 
 	size_t i = 0;
 	for (auto _ : state) {
 		benchmark::DoNotOptimize(imp.query(queries[i]));
 		i = (i + 1) & (QUERY_BATCH - 1);
-		
 	}
 	
 	state.SetItemsProcessed(state.iterations());
-
-	const double bytes = measure_bytes([&] { return Imp(a); });
-	state.counters["bytes"] = benchmark::Counter(bytes, benchmark::Counter::kDefaults, benchmark::Counter:kIs1024);
-
-	state.counters["bytes/elem"] = bytes / size;
 }
 
 template <typename Imp>
@@ -61,11 +56,6 @@ static void BM_Multiple_Queries(benchmark::State& state) {
 			benchmark::DoNotOptimize(res);
 		}
 	}
-
-	const double bytes = measure_bytes([&] { return Imp(a); });
-	state.counters["bytes"] = benchmark::Counter(bytes, benchmark::Counter::kDefaults, benchmark::Counter:kIs1024);
-
-	state.counters["bytes/elem"] = bytes / size;
 }
 
 static void BM_FH_Different_Block_Sizes(benchmark::State& state) {
@@ -77,10 +67,12 @@ static void BM_FH_Different_Block_Sizes(benchmark::State& state) {
 		benchmark::DoNotOptimize(fhb);
 	}
 
-	const double bytes = measure_bytes([&] { return Imp(a); });
-	state.counters["bytes"] = benchmark::Counter(bytes, benchmark::Counter::kDefaults, benchmark::Counter:kIs1024);
+#if TRACK_MEMORY
+	const double bytes = measure_bytes([&] { return Fischer_Heun_Benchmark::create(a, b); });
+	state.counters["bytes"] = benchmark::Counter(bytes, benchmark::Counter::kDefaults, benchmark::Counter::kIs1024);
 
-	state.counters["bytes/elem"] = bytes / size;
+	state.counters["bytes/elem"] = bytes / a.size();
+#endif
 }
 
 REGISTER_ALGORITHM(Naive_Linear, 1 << 24);
