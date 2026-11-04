@@ -2,7 +2,9 @@
 #include <random>
 #include <vector>
 #include <benchmark/benchmark.h>
+#include "range_minimum_query/common.h"
 
+using namespace range_minimum_query; 
 
 std::vector<int> make_random_array(size_t n) {
 	std::mt19937_64 random(42);
@@ -26,4 +28,55 @@ void power_of_two_boundaries(benchmark::Benchmark* b) {
 		b->Arg(int64_t(1) << k);
 		b->Arg((int64_t(1) << k) + 1);
 	}
+}
+
+std::vector<Range> make_random_queries(size_t n) {
+	std::mt19937_64 random(7);
+	std::vector<Range> ranges(QUERY_BATCH);
+
+	for (auto& range: ranges) {
+		size_t len = n / 2 + random() % (n - n / 2);
+		size_t l = random() % (n - len + 1);
+		range = {l, l + len - 1};
+	}
+
+	return ranges;
+}
+
+std::vector<Range> make_short_queries(size_t n) {
+	std::mt19937_64 random(7);
+	std::vector<Range> ranges(QUERY_BATCH);
+	
+	for (auto& range: ranges) {
+		size_t len = std::min<size_t>(1 + random() % 8, n);
+		size_t l = random() % (n - len + 1);
+		range = {l, l + len - 1};
+	}
+
+	return ranges;
+}
+
+std::vector<Range> make_long_queries(size_t n) {
+	std::mt19937_64 random(7);
+	std::vector<Range> ranges(QUERY_BATCH);
+	
+	for (auto& range: ranges) {
+		size_t len = n / 2 + random() % (n - n / 2);
+		size_t l = random() % (n - len + 1);
+		range = {l, l + len - 1};
+	}
+
+	return ranges;
+}
+
+std::vector<Range> make_single_queries(size_t n) {
+	std::mt19937_64 random(7);
+	std::vector<Range> ranges(QUERY_BATCH);
+	
+	for (auto& range: ranges) {
+		size_t i = random() % n;
+		range = {i, i};
+	}
+
+	return ranges;
 }
