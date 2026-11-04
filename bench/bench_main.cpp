@@ -1,35 +1,36 @@
 #include <benchmark/benchmark.h> 
-#include "bench/helper.h"
+#include "helper.h"
 #include "range_minimum_query/naive_linear.h" 
 #include "range_minimum_query/naive_block.h" 
 #include "range_minimum_query/segment_tree.h" 
 #include "range_minimum_query/sparse_table.h" 
 #include "range_minimum_query/fischer_heun.h" 
 
+using namespace range_minimum_query;
+
+using Generator = std::vector<int> (*)(size_t);
+
 template <typename Imp>
-static void BM_Construct(benchmark::State& state) {
+static void BM_Construct(benchmark::State& state, Generator generate) {
 	const size_t size = state.range(0);
-	std::vector<int> x;
-	x.reserve(size);
-	for (int i = 0; i < size; ++i) {
-		x.push_back(static_cast<int>(size));
-	}
-	
+	const std::vector<int> a = generate(size);
+
 	for (auto _ : state) {
-		Imp imp(x);
+		Imp imp(a);
 		benchmark::DoNotOptimize(imp);
 	}
 }
 
-BENCHMARK_TEMPLATE(BM_Construct, range_minimum_query::Naive_Linear)->RangeMultiplier(4)->Range(1 << 4, 1 << 24)->Unit(benchmark::kMicrosecond);
-BENCHMARK_TEMPLATE(BM_Construct, range_minimum_query::Naive_Block)->RangeMultiplier(4)->Range(1 << 4, 1 << 24)->Unit(benchmark::kMicrosecond);
-BENCHMARK_TEMPLATE(BM_Construct, range_minimum_query::Segment_Tree)->RangeMultiplier(4)->Range(1 << 4, 1 << 24)->Unit(benchmark::kMicrosecond);
-BENCHMARK_TEMPLATE(BM_Construct, range_minimum_query::Sparse_Table)->RangeMultiplier(4)->Range(1 << 4, 1 << 24)->Unit(benchmark::kMicrosecond);
-BENCHMARK_TEMPLATE(BM_Construct, range_minimum_query::Fischer_Heun)->RangeMultiplier(4)->Range(1 << 4, 1 << 24)->Unit(benchmark::kMicrosecond);
 
-static void BM_Query_Sample_1(benchmark::State& state) {
-	const size_t size = state.range(0);
-	std::vector<int> x;
-}
+#define REGISTER_BUILD(Alg, max_n)								\
+	BENCHMARK_CAPTURE(BM_Construct<Alg>, random, make_random_array)				\
+		->Apply([](benchmark::Benchmark* b) { powers_of_four(b, max_n); })	\
+		->ArgName("n")->Unit(benchmark::kMicrosecond);					\
+	BENCHMARK_CAPTURE(BM_Construct<Alg>, ascending, make_ascending_array)			\
+		->Apply([](benchmark::Benchmark* b) { powers_of_four(b, max_n); })	\
+		->ArgName("n")->Unit(benchmark::kMicrosecond)			
+
+REGISTER_BUILD(Naive_Linear, 1 << 24);
+REGISTER_BUILD(Fischer_Heun, 1 << 24);
 
 BENCHMARK_MAIN();
