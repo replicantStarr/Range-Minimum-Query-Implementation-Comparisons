@@ -80,3 +80,28 @@ std::vector<Range> make_single_queries(size_t n) {
 
 	return ranges;
 }
+
+void workload_sizes(benchmark::Benchmark* b, int64_t max_n) {
+	for (int64_t n : { 1 << 10, 1 << 14, 1 << 18, 1 << 22}) {
+		if (n > max_n) continue;
+
+		for (int64_t q: {1, 100, 10000, 1000000}) {
+			b->Args({n, q});
+		}
+	}
+}
+
+std::vector<int> make_same_blocks(size_t n) {
+	const size_t b = (std::bit_width(n) - 1) / 2;
+	std::mt19937_64 random(42);
+
+	std::vector<int> pattern(b);
+	for (int& v : pattern) v = static_cast<int>(random());
+
+	std::vector<int> a(n);
+	for (size_t i = 0; i < n; ++i) {
+		a[i] = pattern[i % b];
+	}
+
+	return a;
+}

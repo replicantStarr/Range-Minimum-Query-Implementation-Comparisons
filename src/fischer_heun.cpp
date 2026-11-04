@@ -117,9 +117,11 @@ namespace range_minimum_query {
 	}
 
 	// The constructor acts as the pre-processing phase, responsible for building essential fields.
-	Fischer_Heun::Fischer_Heun(const std::vector<int>& a_) : 
+	Fischer_Heun::Fischer_Heun(const std::vector<int>& a_) : Fischer_Heun(a_, 0.5*safe_log(a_.size()))
+
+	Fischer_Heun::Fischer_Heun(const std::vector<int>& a_, size_t block_size) 
 		a(a_), 
-		block_size(0.5*safe_log(a_.size())) 
+		block_size(block_size) 
 	{
 		// If the array size is 0, nothing is to be constructed
 		// If the block size is < 2, a linear search is more optimal
