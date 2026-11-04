@@ -38,7 +38,12 @@ add_library(range_minimum_query
 )
 
 target_include_directories(range_minimum_query PUBLIC include)
-target_compile_options(range_minimum_query PRIVATE -Wall -Wextra -Wpedantic)
+
+if(MSVC)
+	target_compile_options(range_minimum_query PRIVATE /W4)
+else()
+	target_compile_options(range_minimum_query PRIVATE -Wall -Wextra -Wpedantic)
+endif()
 
 enable_testing()
 include(GoogleTest)
@@ -52,4 +57,9 @@ add_executable(range_minimum_query_bench
 	bench/helper.cpp
 )
 target_link_libraries(range_minimum_query_bench PRIVATE range_minimum_query benchmark::benchmark)
-target_compile_options(range_minimum_query_bench PRIVATE -O3 -march=native)
+
+if(MSVC)
+	target_compile_options(range_minimum_query_bench PRIVATE /02)
+else()
+	target_compile_options(range_minimum_query_bench PRIVATE -O3 -march=native)
+endif()

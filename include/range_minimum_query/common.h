@@ -3,7 +3,7 @@
 /*
  * This file exists as a common abstraction for all three implementations.
  *
- * It makes tesing simple -- we only need to write one set of tests.
+ * It makes testing simple -- we only need to write one set of tests.
  */
 
 #include <stdexcept>

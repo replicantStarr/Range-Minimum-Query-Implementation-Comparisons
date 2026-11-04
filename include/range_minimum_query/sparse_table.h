@@ -9,5 +9,10 @@ namespace range_minimum_query {
 	public:
 		Sparse_Table(const std::vector<int>& a);
 		int query(Range range);
+
+	private:
+		std::vector<std::vector<int>> sparseTable;
+		std::vector<size_t> logTable;
+		size_t n;
 	};
 }
