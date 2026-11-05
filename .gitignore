@@ -15,3 +15,5 @@ compile_commands.json
 *.so
 *.out
 /.vs
+
+.ipynb_checkpoints/
