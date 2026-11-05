@@ -120,11 +120,11 @@ and reduces noise in the timings. `taskset` is Linux only, and the machine needs
 three cores. Change the `-c 2` in the script to use a different core.
 
 The results are written to the current directory as `results_run1.csv` to `results_run5.csv`,
-and a new run overwrites them. The results from earlier runs are kept in `bench/run_results/`,
+and a new run overwrites them. The results from earlier runs are kept in `results/`,
 so move new files there yourself if you want to keep them:
 
 ```sh
-mv results_run*.csv bench/run_results/
+mv results_run*.csv results/
 ```
 
 Each file starts with a block of system information, and the CSV data begins at the line
@@ -277,7 +277,7 @@ The C++ libraries are downloaded by CMake during the configure phase:
 | [GoogleTest](https://github.com/google/googletest) | v1.18.0 | Unit tests | BSD 3-Clause |
 | [Google Benchmark](https://github.com/google/benchmark) | v1.10.0 | Benchmarks | Apache 2.0 |
 
-The Python libraries are used by `results/plotting_result.py` to plot benchmark results:
+The Python libraries are used in `analysis/` to plot benchmark results:
 
 | Library | Used for | License |
 | --- | --- | --- |
