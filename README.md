@@ -2,15 +2,7 @@
 There are five different implementations of range minimum query in here.
 
 # REPORT
-The report is in `report/`. Its source is `report/main.tex`, and the figures it uses are in
-`report/figures/`. Build the PDF from the `report` folder, running the command twice so the
-references and contents update:
-
-```sh
-cd report
-pdflatex main.tex
-pdflatex main.tex
-```
+The report is at [report/report.pdf](report/report.pdf).
 
 # HOW TO BUILD 
 ```sh
