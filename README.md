@@ -102,6 +102,37 @@ It stores an `n` by `n` table of integers, so its memory grows with the square o
 | 2^16 | 16 GiB |
 | 2^18 | 256 GiB |
 
+## REPEATED RUNS WITH BENCH.SH
+`bench/bench.sh` runs the full benchmark suite five times and saves each run to its own CSV
+file. Repeating the runs shows how much the timings vary. Build in Release first, as shown
+above, then run it from the repository root:
+
+```sh
+bash bench/bench.sh
+```
+
+The script uses paths relative to the current directory, so it will not find the benchmark
+executable from anywhere else. A full run takes about 16 minutes on an 8-core desktop, so
+expect the script to take about 80 minutes. Leave the machine idle while it runs.
+
+Each run is pinned to CPU core 2 with `taskset`, which stops the process moving between cores
+and reduces noise in the timings. `taskset` is Linux only, and the machine needs at least
+three cores. Change the `-c 2` in the script to use a different core.
+
+The results are written to the current directory as `results_run1.csv` to `results_run5.csv`,
+and a new run overwrites them. The results from earlier runs are kept in `bench/run_results/`,
+so move new files there yourself if you want to keep them:
+
+```sh
+mv results_run*.csv bench/run_results/
+```
+
+Each file starts with a block of system information, and the CSV data begins at the line
+starting with `name,`.
+
+The script does not turn off the glibc cache, so its memory counters read low at small sizes.
+See [ACCURATE MEMORY RESULTS](#accurate-memory-results) for how to collect those separately.
+
 ## SPECIFIC BENCHMARKS
 `--benchmark_filter` runs only the benchmarks whose name matches a regular expression.
 Keep the quotes, because `<`, `>`, `|` and `$` are special characters in the shell.
